@@ -47,6 +47,7 @@ const upload = multer({ storage });
 
 // Endpoint to upload recorded audio
 app.post("/upload", upload.single("file"), (req, res) => {
+  console.log("Received file upload:", req.file);
   if (!req.file) {
     return res.status(400).json({ error: "No file uploaded" });
   }

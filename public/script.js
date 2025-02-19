@@ -40,6 +40,7 @@ document.getElementById("record-btn").addEventListener("click", async () => {
     mediaRecorder.ondataavailable = event => audioChunks.push(event.data);
     mediaRecorder.onstop = () => {
       audioBlob = new Blob(audioChunks, { type: "audio/wav" });
+      console.log("Audio blob created:", audioBlob);
       document.getElementById("play-btn").disabled = false;
       document.getElementById("save-btn").disabled = false;
     };
@@ -62,21 +63,27 @@ document.getElementById("play-btn").addEventListener("click", () => {
     audioPlayer.src = audioURL;
     audioPlayer.hidden = false;
     audioPlayer.play();
+    console.log("Playing audio from URL:", audioURL);
   }
 });
 
 // Save recorded audio (uploads the audio using the first text's id)
 document.getElementById("save-btn").addEventListener("click", async () => {
-  if (!audioBlob) return console.error("No recorded audio found!");
+  if (!audioBlob) {
+    console.error("No recorded audio found!");
+    return;
+  }
   const formData = new FormData();
   const fileName = `${textData[0].id}.wav`;
   formData.append("file", audioBlob, fileName);
+  console.log("Uploading file:", fileName);
   try {
     const response = await fetch("/upload", {
       method: "POST",
       body: formData
     });
     if (response.ok) {
+      console.log("Audio file uploaded successfully.");
       // Reset audio-related UI after saving
       audioBlob = null;
       document.getElementById("play-btn").disabled = true;
