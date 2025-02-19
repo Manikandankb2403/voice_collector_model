@@ -13,8 +13,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 async function loadTexts() {
     try {
-        const response = await fetch("texts.json");
+        const response = await fetch("http://localhost:5000/get-texts"); // ✅ Fetch from server
         textData = await response.json();
+        updateText();
     } catch (error) {
         console.error("Error loading texts:", error);
     }
