@@ -9,7 +9,7 @@ const PORT = process.env.PORT || 5000;
 
 app.use(cors());
 app.use(express.json());
-app.use(express.static("public"));
+app.use(express.static(path.join(__dirname, "public"))); // Serve frontend assets
 
 // Ensure "uploads" directory exists
 const uploadDir = path.join(__dirname, "uploads");
@@ -17,13 +17,19 @@ if (!fs.existsSync(uploadDir)) {
     fs.mkdirSync(uploadDir);
 }
 
-// Ensure "texts.json" file exists
+// Ensure "texts.json" file exists in the project root
 const textFile = path.join(__dirname, "texts.json");
 if (!fs.existsSync(textFile)) {
-    fs.writeFileSync(textFile, JSON.stringify([]));
+    // Create an initial texts.json with sample data (if desired)
+    const sampleData = [
+        { "id": "text1", "text": "Please read this first sentence." },
+        { "id": "text2", "text": "This is the second text to record." },
+        { "id": "text3", "text": "Record this third text as well." }
+    ];
+    fs.writeFileSync(textFile, JSON.stringify(sampleData, null, 2));
 }
 
-// ✅ Serve texts.json via an API endpoint
+// API endpoint to serve texts.json
 app.get("/get-texts", (req, res) => {
     try {
         const texts = JSON.parse(fs.readFileSync(textFile, "utf-8"));
@@ -65,12 +71,15 @@ app.get("/get-recordings", (req, res) => {
 // Endpoint to delete text from texts.json
 app.post("/delete-text", (req, res) => {
     const { textId } = req.body;
-
     let texts = JSON.parse(fs.readFileSync(textFile, "utf-8"));
     texts = texts.filter(text => text.id !== textId);
-
     fs.writeFileSync(textFile, JSON.stringify(texts, null, 2));
     res.json({ message: "Text deleted successfully" });
+});
+
+// Serve index.html for all other routes (for client-side routing, if needed)
+app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
 app.listen(PORT, () => {
