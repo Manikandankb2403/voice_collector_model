@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Voice Data Collection</title>
+    <title>Voice Collector</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -11,7 +11,7 @@
         <h1>Voice Data Collection</h1>
         <div class="text-box" id="text-display">Loading...</div>
 
-        <button id="start-btn">🎤 Start Recording</button>
+        <button id="record-btn">🎤 Start Recording</button>
         <button id="play-btn" disabled>▶️ Play</button>
         <button id="save-btn" disabled>💾 Save</button>
 
@@ -21,6 +21,9 @@
             <button id="prev-btn">Previous</button>
             <button id="next-btn">Next</button>
         </div>
+
+        <h2>Recorded Files:</h2>
+        <div id="audio-list"></div>
     </div>
 
     <script src="script.js"></script>
