@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voice Data Collection</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Voice Data Collection</h1>
+        <div class="text-box" id="text-display">Loading...</div>
+
+        <button id="start-btn">🎤 Start Recording</button>
+        <button id="play-btn" disabled>▶️ Play</button>
+        <button id="save-btn" disabled>💾 Save</button>
+
+        <audio id="audio-player" controls hidden></audio>
+
+        <div class="nav-buttons">
+            <button id="prev-btn">Previous</button>
+            <button id="next-btn">Next</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+[
+  {
+      "id": "text1",
+      "text": "This is the first text to be recorded."
+  },
+  {
+      "id": "text2",
+      "text": "Here is another text for recording."
+  },
+  {
+      "id": "text3",
+      "text": "Please record this text as well."
+  }
+]

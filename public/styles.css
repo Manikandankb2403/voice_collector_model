@@ -1,0 +1,136 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 10px;
+}
+
+.container {
+    max-width: 500px;
+    margin: auto;
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    font-size: 18px;
+    margin-bottom: 15px;
+}
+
+.text-box {
+    font-size: 16px;
+    font-weight: normal;
+    color: #333;
+    background-color: #e0e0e0;
+    padding: 10px;
+    border-radius: 6px;
+    margin-bottom: 15px;
+}
+
+button {
+    font-size: 14px;
+    padding: 8px 12px;
+    margin: 8px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#record-btn {
+    background-color: #28a745;
+    color: white;
+}
+
+#record-btn:hover {
+    background-color: #218838;
+}
+
+#play-btn {
+    background-color: #007bff;
+    color: white;
+}
+
+#play-btn:hover {
+    background-color: #0056b3;
+}
+
+#save-btn {
+    background-color: #ffc107;
+    color: black;
+}
+
+#save-btn:hover {
+    background-color: #e0a800;
+}
+
+.nav-buttons {
+    margin-top: 15px;
+}
+
+.nav-buttons button {
+    background-color: #6c757d;
+    color: white;
+}
+
+.nav-buttons button:hover {
+    background-color: #5a6268;
+}
+
+#audio-list {
+    margin-top: 15px;
+    text-align: left;
+    font-size: 14px;
+}
+
+#audio-list div {
+    background-color: #fff;
+    padding: 8px;
+    margin: 4px 0;
+    border-radius: 4px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+audio {
+    width: 100%;
+    margin-top: 5px;
+}
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f0f4f8;
+}
+
+.container {
+    text-align: center;
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 300px;
+}
+
+button {
+    padding: 10px;
+    font-size: 16px;
+    margin: 10px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+button:disabled {
+    background-color: #ccc;
+}
+
+.nav-buttons {
+    margin-top: 20px;
+}
