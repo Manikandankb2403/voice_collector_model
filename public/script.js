@@ -1,4 +1,3 @@
-let currentIndex = 0;
 let textData = [];
 let mediaRecorder;
 let audioChunks = [];
@@ -7,7 +6,6 @@ let isRecording = false;
 
 document.addEventListener("DOMContentLoaded", async () => {
   await loadTexts();
-  await loadAudioFiles();
   updateText();
 });
 
@@ -23,59 +21,12 @@ async function loadTexts() {
   }
 }
 
-// Load recorded audio files from the server
-async function loadAudioFiles() {
-  try {
-    const response = await fetch("/get-recordings");
-    const audioFiles = await response.json();
-    const audioList = document.getElementById("audio-list");
-    audioList.innerHTML = "";
-    audioFiles.forEach(file => {
-      const container = document.createElement("div");
-      const fileLabel = document.createElement("p");
-      fileLabel.textContent = file;
-      const audioElement = document.createElement("audio");
-      audioElement.src = `/${file}`;
-      audioElement.controls = true;
-      container.appendChild(fileLabel);
-      container.appendChild(audioElement);
-      audioList.appendChild(container);
-    });
-  } catch (error) {
-    console.error("Error loading recordings:", error);
-  }
-}
-
-// Update the displayed text
+// Update the displayed text (always show the first text)
 function updateText() {
   if (textData.length > 0) {
-    document.getElementById("text-display").textContent = textData[currentIndex].text;
+    document.getElementById("text-display").textContent = textData[0].text;
   } else {
-    document.getElementById("text-display").textContent = "No more text available.";
-  }
-}
-
-// Automatically delete the current text from the server and update the list
-async function deleteCurrentText() {
-  if (textData.length === 0) return;
-  const textId = textData[currentIndex].id;
-  try {
-    const response = await fetch("/delete-text", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ textId })
-    });
-    if (response.ok) {
-      textData.splice(currentIndex, 1);
-      if (currentIndex >= textData.length) {
-        currentIndex = 0; // Reset to the start if we've reached the end
-      }
-      updateText();
-    } else {
-      console.error("Failed to delete text.");
-    }
-  } catch (error) {
-    console.error("Error deleting text:", error);
+    document.getElementById("text-display").textContent = "No text available.";
   }
 }
 
@@ -114,11 +65,11 @@ document.getElementById("play-btn").addEventListener("click", () => {
   }
 });
 
-// Save recorded audio and then automatically delete the current text
+// Save recorded audio (uploads the audio using the first text's id)
 document.getElementById("save-btn").addEventListener("click", async () => {
   if (!audioBlob) return console.error("No recorded audio found!");
   const formData = new FormData();
-  const fileName = `${textData[currentIndex].id}.wav`;
+  const fileName = `${textData[0].id}.wav`;
   formData.append("file", audioBlob, fileName);
   try {
     const response = await fetch("/upload", {
@@ -126,10 +77,7 @@ document.getElementById("save-btn").addEventListener("click", async () => {
       body: formData
     });
     if (response.ok) {
-      // After uploading, delete the current text automatically
-      await deleteCurrentText();
-      await loadAudioFiles(); // Refresh the list of recordings
-      // Reset audio-related UI
+      // Reset audio-related UI after saving
       audioBlob = null;
       document.getElementById("play-btn").disabled = true;
       document.getElementById("save-btn").disabled = true;

@@ -18,21 +18,14 @@ if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir);
 }
 
-// Define the path to texts.json (which is in the root folder)
+// Define the path to texts.json in the root folder
 const textFile = path.join(__dirname, "texts.json");
-
-// If texts.json does not exist, create it with some sample data
-if (!fs.existsSync(textFile)) {
-  const sampleData = [
-    { "id": "text1", "text": "Please read this sentence for voice collection." },
-    { "id": "text2", "text": "This is the second text to record." },
-    { "id": "text3", "text": "Record this third text as well." }
-  ];
-  fs.writeFileSync(textFile, JSON.stringify(sampleData, null, 2));
-}
 
 // API endpoint to serve texts from texts.json
 app.get("/get-texts", (req, res) => {
+  if (!fs.existsSync(textFile)) {
+    return res.status(404).json({ error: "texts.json file not found" });
+  }
   try {
     const texts = JSON.parse(fs.readFileSync(textFile, "utf-8"));
     res.json(texts);
@@ -60,7 +53,7 @@ app.post("/upload", upload.single("file"), (req, res) => {
   res.json({ message: "File uploaded successfully", filename: req.file.filename });
 });
 
-// Endpoint to retrieve recorded audio files
+// (Optional) Endpoint to retrieve recorded audio files
 app.get("/get-recordings", (req, res) => {
   fs.readdir(uploadDir, (err, files) => {
     if (err) {
@@ -70,16 +63,7 @@ app.get("/get-recordings", (req, res) => {
   });
 });
 
-// Endpoint to delete a text from texts.json
-app.post("/delete-text", (req, res) => {
-  const { textId } = req.body;
-  let texts = JSON.parse(fs.readFileSync(textFile, "utf-8"));
-  texts = texts.filter(text => text.id !== textId);
-  fs.writeFileSync(textFile, JSON.stringify(texts, null, 2));
-  res.json({ message: "Text deleted successfully" });
-});
-
-// Catch-all: serve index.html for any unknown route (for client-side routing)
+// Catch-all: Serve index.html for any unknown route
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
